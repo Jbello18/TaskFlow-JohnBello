@@ -5,9 +5,6 @@ void main() {
   runApp(const TaskFlowApp());
 }
 
-// -----------------------------------------------------------------------------
-// 1. Definición del enrutador (GoRouter)
-// -----------------------------------------------------------------------------
 final appRouter = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const TaskListScreen()),
@@ -21,9 +18,6 @@ final appRouter = GoRouter(
   ],
 );
 
-// -----------------------------------------------------------------------------
-// 2. TaskFlowApp con MaterialApp.router
-// -----------------------------------------------------------------------------
 class TaskFlowApp extends StatelessWidget {
   const TaskFlowApp({super.key});
 
@@ -41,9 +35,6 @@ class TaskFlowApp extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------------------
-// 3. Modelo de datos y lista local
-// -----------------------------------------------------------------------------
 class Task {
   const Task({
     required this.id,
@@ -98,9 +89,6 @@ const demoTasks = [
   ),
 ];
 
-// -----------------------------------------------------------------------------
-// 4. TaskCard navegable (con callback onTap)
-// -----------------------------------------------------------------------------
 class TaskCard extends StatelessWidget {
   const TaskCard({super.key, required this.task, this.onTap});
 
@@ -124,9 +112,6 @@ class TaskCard extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------------------
-// 5. TaskListScreen (Lista de tareas con context.push)
-// -----------------------------------------------------------------------------
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
 
@@ -149,9 +134,6 @@ class TaskListScreen extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------------------
-// 6. TaskDetailScreen (Pantalla de detalle con context.pop)
-// -----------------------------------------------------------------------------
 class TaskDetailScreen extends StatelessWidget {
   const TaskDetailScreen({super.key, required this.taskId});
 
