@@ -11,8 +11,10 @@ class TasksViewModel extends ChangeNotifier {
   String? errorMessage;
 
   List<Task> get tasks => List.unmodifiable(_tasks);
+  bool get isEmpty => !isLoading && errorMessage == null && _tasks.isEmpty;
 
   Future<void> loadTasks() async {
+    if (isLoading) return;
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -20,7 +22,8 @@ class TasksViewModel extends ChangeNotifier {
     try {
       _tasks = await _repository.getTasks();
     } catch (error) {
-      errorMessage = 'No se pudieron cargar las tareas.';
+      _tasks = [];
+      errorMessage = 'No se pudieron cargar las tareas. Revisa tu conexión.';
       debugPrint('Error al cargar tareas: $error');
     } finally {
       isLoading = false;
@@ -39,7 +42,6 @@ class TasksViewModel extends ChangeNotifier {
   void toggleCompleted(int id) {
     final current = findTask(id);
     if (current == null) return;
-
     final updated = current.copyWith(isCompleted: !current.isCompleted);
     _repository.save(updated);
     _tasks = [

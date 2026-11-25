@@ -64,3 +64,12 @@ direcciones de un servidor ya conectado.
 - Campos recibidos desde la API:** `id` (`int`), `userId` (`int`), `title` (`String`) y `completed` (`bool`, asignado a `isCompleted`).
 - Valores completados por defecto en TaskFlow:** como la API de práctica no incluye descripción ni prioridad, `Task.fromJson` asigna `'Sin descripción (API)'` a `description` y `'Sin prioridad (API)'` a `priority`.
 - Alcance de actualización:** marcar una tarea como completada o pendiente modifica únicamente la copia en memoria dentro de `RemoteTaskRepository`; al reiniciar la aplicación, las tareas vuelven a su estado original en el servidor.
+
+## Estados de la lista remota
+
+TaskFlow maneja cuatro estados explícitos en `TasksViewModel` y `TaskListScreen`:
+
+1. Carga (`isLoading`): se activa al iniciar `loadTasks()` o al pulsar el botón/gesto de actualización. Muestra un `CircularProgressIndicator` y bloquea peticiones simultáneas.
+2. Éxito (`tasks` con elementos): muestra las tarjetas dentro de un `RefreshIndicator` que permite recargar deslizando hacia abajo y navegar al detalle por `id`.
+3. Vacío (`isEmpty`): ocurre cuando la petición responde `HTTP 200` con una lista `[]`. Se comprobó cambiando temporalmente `userId = 9999` en `TaskApiService`; muestra el mensaje de ausencia de tareas y el botón **Actualizar**.
+4. Error (`errorMessage`): ocurre ante fallos de red o servidor. Se comprobó desactivando la conexión a Internet del dispositivo y pulsando actualizar; muestra el mensaje de error y el botón **Reintentar**, que recupera los datos al restablecer la red sin reiniciar la aplicación.
