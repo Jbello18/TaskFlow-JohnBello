@@ -23,7 +23,7 @@ class TasksViewModel extends ChangeNotifier {
       _tasks = await _repository.getTasks();
     } catch (error) {
       _tasks = [];
-      errorMessage = 'No se pudieron cargar las tareas. Revisa tu conexión.';
+      errorMessage = 'No se pudieron cargar las tareas. Verifica tu conexión.';
       debugPrint('Error al cargar tareas: $error');
     } finally {
       isLoading = false;

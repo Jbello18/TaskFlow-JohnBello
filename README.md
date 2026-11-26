@@ -73,3 +73,10 @@ TaskFlow maneja cuatro estados explícitos en `TasksViewModel` y `TaskListScreen
 2. Éxito (`tasks` con elementos): muestra las tarjetas dentro de un `RefreshIndicator` que permite recargar deslizando hacia abajo y navegar al detalle por `id`.
 3. Vacío (`isEmpty`): ocurre cuando la petición responde `HTTP 200` con una lista `[]`. Se comprobó cambiando temporalmente `userId = 9999` en `TaskApiService`; muestra el mensaje de ausencia de tareas y el botón **Actualizar**.
 4. Error (`errorMessage`): ocurre ante fallos de red o servidor. Se comprobó desactivando la conexión a Internet del dispositivo y pulsando actualizar; muestra el mensaje de error y el botón **Reintentar**, que recupera los datos al restablecer la red sin reiniciar la aplicación.
+
+## Formulario de tareas
+
+- Ruta: `/new` (`TaskFormScreen`), accesible desde el botón flotante **Nueva tarea** en la lista principal.
+- Validaciones: exige un título no vacío de al menos 3 caracteres mediante `GlobalKey<FormState>` antes de construir el borrador (`TaskDraft`).
+- Campos disponibles: título obligatorio, descripción opcional, selector de prioridad (`Alta`, `Media`, `Baja`) y selector opcional de fecha límite mediante `showDatePicker`.
+- Retorno de datos: al validar correctamente, `context.pop(draft)` devuelve el borrador a la pantalla anterior y muestra un `SnackBar` de confirmación sin enviar aún peticiones `POST` a la API.

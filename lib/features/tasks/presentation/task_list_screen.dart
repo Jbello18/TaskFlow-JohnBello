@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'task_form_screen.dart';
 import 'tasks_view_model.dart';
 
 class TaskListScreen extends StatelessWidget {
@@ -24,6 +25,26 @@ class TaskListScreen extends StatelessWidget {
         ],
       ),
       body: _buildBody(context, viewModel),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          final draft = await context.push<TaskDraft>('/new');
+          if (!context.mounted || draft == null) return;
+
+          final dateInfo = draft.dueDate != null
+              ? ' · Fecha: ${draft.dueDate!.day.toString().padLeft(2, '0')}/${draft.dueDate!.month.toString().padLeft(2, '0')}/${draft.dueDate!.year}'
+              : '';
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Borrador válido: "${draft.title}" (${draft.priority}$dateInfo)',
+              ),
+            ),
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Nueva tarea'),
+      ),
     );
   }
 
@@ -35,7 +56,7 @@ class TaskListScreen extends StatelessWidget {
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 12),
-            Text('Cargando tareas desde el servidor...'),
+            Text('Cargando tareas...'),
           ],
         ),
       );
@@ -73,7 +94,7 @@ class TaskListScreen extends StatelessWidget {
               const Icon(Icons.inbox_outlined, size: 48, color: Colors.grey),
               const SizedBox(height: 12),
               const Text(
-                'Todavía no hay tareas asignadas para este usuario.',
+                'Todavía no hay tareas para mostrar.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
