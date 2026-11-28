@@ -33,4 +33,29 @@ class TaskApiService {
       return Task.fromJson(json);
     }).toList();
   }
+
+  Future<Task> createTask(String title) async {
+    final response = await _dio.post(
+      '/todos',
+      data: {'title': title, 'completed': false, 'userId': userId},
+    );
+    debugPrint('POST /todos → HTTP ${response.statusCode}');
+    final raw = response.data;
+    if (raw == null) throw const FormatException('Respuesta vacía.');
+    final json = Map<String, dynamic>.from(raw as Map);
+    return Task.fromJson(json);
+  }
+
+  Future<void> updateTask(Task task) async {
+    final response = await _dio.patch(
+      '/todos/${task.id}',
+      data: {'title': task.title, 'completed': task.isCompleted},
+    );
+    debugPrint('PATCH /todos/${task.id} → HTTP ${response.statusCode}');
+  }
+
+  Future<void> deleteTask(int id) async {
+    final response = await _dio.delete('/todos/$id');
+    debugPrint('DELETE /todos/$id → HTTP ${response.statusCode}');
+  }
 }

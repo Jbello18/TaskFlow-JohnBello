@@ -80,3 +80,10 @@ TaskFlow maneja cuatro estados explícitos en `TasksViewModel` y `TaskListScreen
 - Validaciones: exige un título no vacío de al menos 3 caracteres mediante `GlobalKey<FormState>` antes de construir el borrador (`TaskDraft`).
 - Campos disponibles: título obligatorio, descripción opcional, selector de prioridad (`Alta`, `Media`, `Baja`) y selector opcional de fecha límite mediante `showDatePicker`.
 - Retorno de datos: al validar correctamente, `context.pop(draft)` devuelve el borrador a la pantalla anterior y muestra un `SnackBar` de confirmación sin enviar aún peticiones `POST` a la API.
+
+## Operaciones CRUD y persistencia simulada
+
+- Crear (`POST /todos`): `TaskFormScreen` envía el borrador al `TasksViewModel`, que solicita `createTask` al repositorio y agrega la nueva tarea al estado local tras recibir confirmación HTTP.
+- Actualizar (`PATCH /todos/:id`): desde `TaskDetailScreen`, el diálogo de edición envía el nuevo título mediante `updateTask` y actualiza tanto el detalle como la lista.
+- Eliminar (`DELETE /todos/:id`): tras confirmar en un `AlertDialog`, `deleteTask` envía la petición `DELETE`, elimina la tarea de la lista en pantalla y regresa al listado principal.
+- Limitación de la API de práctica: JSONPlaceholder responde con códigos HTTP exitosos (`201`/`200`) simulando las operaciones de escritura, pero no persiste los cambios en el servidor, al recargar la lista (`GET /todos`) o reiniciar la aplicación, los datos regresan a su estado original.
